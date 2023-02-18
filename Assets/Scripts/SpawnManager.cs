@@ -1,17 +1,31 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public Transform spawnPoint;
-    private Transform player;
+    public List<Transform> spawnPoint = new List<Transform>();
+    private List<Transform> playerTransforms = new List<Transform>();
 
     void Start()
     {
-        player = FindObjectOfType<PlayerMovement>().transform;
+        FindAllPlayerTransforms();
         Explode.OnDeath += MoveToSpawnPoint;
     }
+
+    private void FindAllPlayerTransforms()
+    {
+        PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
+        foreach (var player in players)
+        {
+            playerTransforms.Add(player.transform);
+        }
+    }
+
     private void MoveToSpawnPoint()
     {
-        player.position = spawnPoint.position;
+        for (int i = 0; i < playerTransforms.Count; i++)
+        {
+            playerTransforms[i].position = spawnPoint[i].position;
+        }
     }
 }

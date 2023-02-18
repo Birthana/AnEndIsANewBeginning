@@ -4,7 +4,6 @@ using UnityEngine;
 public class Explode : MonoBehaviour
 {
     public static event Action OnDeath;
-    public Transform spawnPoint;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private float RADIUS;
 
