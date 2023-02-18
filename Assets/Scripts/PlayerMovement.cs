@@ -47,11 +47,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveRight()
     {
-        rb.AddForce(SPEED * Vector2.right);
+        rb.velocity = Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED * Vector2.right;
     }
 
     private void MoveLeft()
     {
-        rb.AddForce(SPEED * Vector2.left);
+        rb.velocity = Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED * Vector2.left;
     }
 }
