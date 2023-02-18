@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2824007967686835366}
   - component: {fileID: 2824007967686835364}
   - component: {fileID: 2824007967686835545}
+  - component: {fileID: 3143828434539947475}
   - component: {fileID: 2824007967686835547}
   - component: {fileID: 2824007967686835546}
   - component: {fileID: 2824007967686835544}
@@ -115,11 +116,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb1f23dcb7a7be041a721280ba974c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 0}
+  chargeTime: 0
+  countdownText: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
   RADIUS: 4
+--- !u!114 &3143828434539947475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2824007967686835367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d1642913fb667438a94c0e9ca38b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 0}
 --- !u!50 &2824007967686835547
 Rigidbody2D:
   serializedVersion: 4
