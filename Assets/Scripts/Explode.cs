@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using TMPro;
 
 public class Explode : MonoBehaviour
 {
-    public static event Action OnDeath;
+    public event Action OnDeath;
+    public event Action<float> OnCharging;
     public float chargeTime;
-    [SerializeField] private TextMeshPro countdownText;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private float RADIUS;
     private bool IsActivated = false;
@@ -33,10 +32,21 @@ public class Explode : MonoBehaviour
     IEnumerator Activating()
     {
         IsActivated = true;
-        Debug.Log($"Charging.");
-        yield return new WaitForSeconds(chargeTime);
+        yield return StartCoroutine(TickingDown());
         DestroyObjectsInRange();
         IsActivated = false;
+    }
+
+    IEnumerator TickingDown()
+    {
+        float cooldown = chargeTime;
+        while (cooldown > 0)
+        {
+            OnCharging?.Invoke(cooldown);
+            float increment = Time.deltaTime;
+            yield return new WaitForSeconds(increment);
+            cooldown -= increment;
+        }
     }
 
     private void DestroyObjectsInRange()
