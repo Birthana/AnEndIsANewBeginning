@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public event Action OnLeft;
+    public event Action OnRight;
     [SerializeField] private float SPEED;
     [Range(0, 1)] [SerializeField] private float ACCELERATION;
     private Rigidbody2D rb;
@@ -26,13 +29,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (!PlayerPressesLeft() && !PlayerPressesRight() && IsMoving())
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
     private bool IsMoving()
     {
-        return rb.velocity != Vector2.zero;
+        return rb.velocity.x != 0;
     }
 
     private bool PlayerPressesRight()
@@ -47,11 +50,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveRight()
     {
-        rb.velocity = Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED * Vector2.right;
+        rb.velocity = new Vector2(Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED, rb.velocity.y);
+        OnRight?.Invoke();
     }
 
     private void MoveLeft()
     {
-        rb.velocity = Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED * Vector2.left;
+        rb.velocity = new Vector2(-Mathf.Abs(Input.GetAxis("Horizontal")) * SPEED, rb.velocity.y);
+        OnLeft?.Invoke();
     }
 }

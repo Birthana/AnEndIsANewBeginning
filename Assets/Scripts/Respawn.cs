@@ -18,4 +18,10 @@ public class Respawn : MonoBehaviour
         transform.position = respawnPoint.position;
         OnRespawn?.Invoke();
     }
+
+    public void SetRespawn(Transform newRespawnPoint)
+    {
+        respawnPoint = newRespawnPoint;
+        OnRespawn?.Invoke();
+    }
 }

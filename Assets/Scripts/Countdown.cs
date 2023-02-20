@@ -12,6 +12,7 @@ public class Countdown : MonoBehaviour
         ResetDisplay();
         var explode = GetComponent<Explode>();
         explode.OnCharging += Display;
+        explode.OnReset += ResetDisplay;
         var respawn = GetComponent<Respawn>();
         respawn.OnRespawn += ResetDisplay;
     }
@@ -23,6 +24,6 @@ public class Countdown : MonoBehaviour
 
     public void Display(float countdown)
     {
-        countdownText.text = string.Format("{0:0.00}", countdown);
+        countdownText.text = string.Format("{0:0.0}", countdown);
     }
 }
