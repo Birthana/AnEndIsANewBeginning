@@ -44,16 +44,19 @@ public class Jump : MonoBehaviour
     private bool IsGrounded()
     {
         Vector2 checkPosition = groundCheck.position;
-        Vector3 checkSize = new Vector2(boxCollider.bounds.size.x - 0.5f, 0.1f);
+        Vector3 checkSize = new Vector2(boxCollider.bounds.size.x - 0.2f, 0.1f);
         RaycastHit2D platformHit = Physics2D.BoxCast(checkPosition, checkSize, 0, Vector2.down, 0.1f, platformLayer);
-        RaycastHit2D playerHit = Physics2D.BoxCast(checkPosition, checkSize, 0, Vector2.down, 0.1f, playerLayer);
-        if (playerHit)
+        RaycastHit2D[] playerHits = Physics2D.BoxCastAll(checkPosition, checkSize, 0, Vector2.down, 0.1f, playerLayer);
+        foreach (var playerHit in playerHits)
         {
-            if (playerHit.transform.gameObject.Equals(transform.gameObject))
+            if (playerHit)
             {
-                playerHit = new RaycastHit2D();
+                if (!playerHit.transform.gameObject.Equals(transform.gameObject))
+                {
+                    return true;
+                }
             }
         }
-        return platformHit.collider != null || playerHit.collider != null;
+        return platformHit.collider != null;
     }
 }

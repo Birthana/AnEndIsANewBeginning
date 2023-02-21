@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: -8619379145389491224}
   - component: {fileID: 24509398891889708}
   - component: {fileID: 4314038406871954582}
+  - component: {fileID: 7055592868033212011}
   - component: {fileID: 2824007967686835547}
   - component: {fileID: 2824007967686835546}
   - component: {fileID: 2824007967686835544}
@@ -300,7 +301,7 @@ MonoBehaviour:
   dandelionLayer:
     serializedVersion: 2
     m_Bits: 512
-  RADIUS: 1.5
+  RADIUS: 2
 --- !u!114 &3143828434539947475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +347,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundCheck: {fileID: 2430522171164255020}
-  JUMP_SPEED: 7
+  JUMP_SPEED: 6.5
 --- !u!114 &4314038406871954582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +360,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 794cff5e20b5a9d488a71b5fecdc1ea0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7055592868033212011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2824007967686835367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3db0b3b058a714e900aa8af84190f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 7747369285211184390, guid: 7a894e04426eddc4ea8bf1513b91f272, type: 3}
 --- !u!50 &2824007967686835547
 Rigidbody2D:
   serializedVersion: 4
@@ -378,7 +392,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 008493af22b865c4e9fc4ade7698fc30, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &2824007967686835546
 BoxCollider2D:
