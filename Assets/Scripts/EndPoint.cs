@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(GameOver))]
 public class EndPoint : MonoBehaviour
 {
+    public AudioSource victorySound;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,6 +16,7 @@ public class EndPoint : MonoBehaviour
 
     private void GameOver()
     {
+        victorySound.Play();
         var timer = FindObjectOfType<Timer>();
         var gameOverScreen = GetComponent<GameOver>();
         gameOverScreen.SetTime(timer.GetTime());
