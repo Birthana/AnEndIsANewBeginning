@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
@@ -7,26 +8,41 @@ using UnityEngine;
 [RequireComponent(typeof(Respawn))]
 public class AnimationManager : MonoBehaviour
 {
-    private static readonly int IDLE = Animator.StringToHash("Player_Idle");
-    private static readonly int MOVE_RIGHT = Animator.StringToHash("Player_Idle");
-    private static readonly int MOVE_LEFT = Animator.StringToHash("Player_Left");
-    private static readonly int JUMP_LEFT = Animator.StringToHash("Player_Jump_Left");
-    private static readonly int JUMP_RIGHT = Animator.StringToHash("Player_Jump_Right");
-    private static readonly int EXPLODE = Animator.StringToHash("Player_Explode");
-    private static readonly int RESPAWN = Animator.StringToHash("Player_Respawn");
+    public List<AnimationClip> clips = new List<AnimationClip>();
+
+    private AnimationClip IDLE;
+    private AnimationClip MOVE_LEFT;
+    private AnimationClip MOVE_RIGHT;
+    private AnimationClip JUMP_LEFT;
+    private AnimationClip JUMP_RIGHT;
+    private AnimationClip EXPLODE;
+    private AnimationClip RESPAWN;
+
     private Animator anim;
-    private int currentHash;
+    private AnimationClip currentClip;
     private bool IsInterrupted;
+    private Coroutine currentCoroutine;
 
     // Start is called before the first frame update
     void Awake()
     {
-        IsInterrupted = false;
         anim = GetComponent<Animator>();
+        SetAnimationHash();
         SetMoveAnimations();
         SetJumpAnimations();
         SetExplodeAnimations();
         SetRespawnAnimations();
+    }
+
+    private void SetAnimationHash()
+    {
+        IDLE = clips[0];
+        MOVE_LEFT = clips[1];
+        MOVE_RIGHT = clips[2];
+        JUMP_LEFT = clips[3];
+        JUMP_RIGHT = clips[4];
+        EXPLODE = clips[5];
+        RESPAWN = clips[6];
     }
 
     private void SetMoveAnimations()
@@ -55,27 +71,40 @@ public class AnimationManager : MonoBehaviour
         respawn.OnRespawn += PlayRespawn;
     }
 
-    public void Play(int hash)
+    public void Play(AnimationClip clip)
     {
-        if (currentHash != hash)
+        if (currentClip != clip)
         {
-            anim.Play(hash);
-            currentHash = hash;
+            anim.Play(clip.name);
+            currentClip = clip;
         }
     }
 
-    IEnumerator Playing(int hash)
+    IEnumerator Playing(AnimationClip clip)
     {
-        IsInterrupted = true;
-        Play(hash);
-        yield return new WaitForSeconds(1.0f);
-        IsInterrupted = false;
+        Play(clip);
+        yield return new WaitForSeconds(clip.length);
+        if(clip == JUMP_LEFT || clip == JUMP_RIGHT)
+        {
+            Play(IDLE);
+        }
+        currentCoroutine = null;
     }
 
-    public void PlayLeft() { if(!IsInterrupted) Play(MOVE_LEFT); }
-    public void PlayRight() { if (!IsInterrupted) Play(MOVE_RIGHT); }
-    public void PlayJumpLeft() { StartCoroutine(Playing(JUMP_LEFT)); }
-    public void PlayJumpRight() { StartCoroutine(Playing(JUMP_RIGHT)); }
-    public void PlayExplode() { StartCoroutine(Playing(EXPLODE)); }
-    public void PlayRespawn() { StartCoroutine(Playing(RESPAWN)); }
+    public void PlayLeft() { if(currentCoroutine == null) Play(MOVE_LEFT); }
+    public void PlayRight() { if (currentCoroutine == null) Play(MOVE_RIGHT); }
+
+    public void PlayCoroutine(AnimationClip clip)
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        currentCoroutine = StartCoroutine(Playing(clip));
+    }
+
+    public void PlayJumpLeft() { PlayCoroutine(JUMP_LEFT); }
+    public void PlayJumpRight() { PlayCoroutine(JUMP_RIGHT); }
+    public void PlayExplode() { PlayCoroutine(EXPLODE); }
+    public void PlayRespawn() { PlayCoroutine(RESPAWN); }
 }

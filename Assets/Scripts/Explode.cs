@@ -8,7 +8,9 @@ public class Explode : MonoBehaviour
     public event Action OnReset;
     public event Action OnExplode;
     public event Action<float> OnCharging;
+
     public float chargeTime;
+    public float explosionTime;
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LayerMask dandelionLayer;
     [SerializeField] private float RADIUS;
@@ -27,10 +29,9 @@ public class Explode : MonoBehaviour
         }
     }
 
-    private bool PlayerPressesSpace()
-    {
-        return Input.GetKeyDown(KeyCode.Space);
-    }
+    public float GetExplosionTime() { return explosionTime; }
+
+    private bool PlayerPressesSpace() { return Input.GetKeyDown(KeyCode.Space); }
 
     IEnumerator Activating()
     {
@@ -58,7 +59,7 @@ public class Explode : MonoBehaviour
     IEnumerator Exploding()
     {
         OnExplode?.Invoke();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(explosionTime);
     }
 
     private void DestroyObjectsInRange()

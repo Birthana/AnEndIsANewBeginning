@@ -520,4 +520,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12fffb52b2d3589419b3f3c85ea47c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Puzzle1
+  scene: 1

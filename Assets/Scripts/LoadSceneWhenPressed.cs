@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 
 
 public class LoadSceneWhenPressed : MonoBehaviour
 {
-    public string sceneName;
+    public enum SceneName { MainMenu, Puzzle1 }
+    public SceneName scene;
 
     void Update()
     {
@@ -17,7 +19,7 @@ public class LoadSceneWhenPressed : MonoBehaviour
     private void LoadScene()
     {
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(scene.ToString());
     }
 
     private bool PlayerPressesLeftMouse() { return Input.GetMouseButtonDown(0); }

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class SpawnAtLocation : EditorWindow
 {
-    private GameObject prefab;
+    private int selectedOption;
+    private GameObject[] prefabs;
 
     [MenuItem("Tools/Spawn Prefab At Location")]
     public static void ShowWindow()
@@ -18,23 +19,35 @@ public class SpawnAtLocation : EditorWindow
     {
         GUILayout.Label("Spawn Prefab At Location", EditorStyles.boldLabel);
 
-        prefab = EditorGUILayout.ObjectField("Prefab To Spawn", prefab, typeof(GameObject), false) as GameObject;
+        prefabs = Resources.LoadAll<GameObject>("Prefabs");
+        string[] options = new string[prefabs.Length];
+        for (int i = 0; i < prefabs.Length; i++)
+        {
+            options[i] = prefabs[i].name;
+        }
+
+        selectedOption = EditorGUILayout.Popup("Prefab To Spawn", selectedOption, options);
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.HelpBox("Click in the scene, and the selected prefab with spawn in the scene in the box.", MessageType.None);
     }
 
     private void Spawn(SceneView sceneView)
     {
-        if (prefab == null)
+        Vector2 mousePositionInEditor = Event.current.mousePosition;
+        Ray ray = HandleUtility.GUIPointToWorldRay(mousePositionInEditor);
+        Vector2 mousePositionInScene = ray.origin;
+
+        Handles.DrawWireCube(Clamp(mousePositionInScene), new Vector3(1.0f, 1.0f));
+        if (Event.current.type == EventType.MouseMove)
         {
-            Debug.LogError("No Prefab to spawn.");
-            return;
+            SceneView.RepaintAll();
         }
 
         if (Event.current.type == EventType.MouseDown)
         {
-            var newObject = Instantiate(prefab);
-            Vector2 mousePositionInEditor = Event.current.mousePosition;
-            Ray ray = HandleUtility.GUIPointToWorldRay(mousePositionInEditor);
-            Vector2 mousePositionInScene = ray.origin;
+            var newObject = Instantiate(prefabs[selectedOption]);
             newObject.transform.position = Clamp(mousePositionInScene);
         }
     }
